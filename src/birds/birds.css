@@ -1,0 +1,42 @@
+.birds {
+  width: 50%;
+}
+.bird-container li {
+  background-color: #303030;
+  color: white;
+  border: 1px solid gray;
+}
+.bird-container li:hover {
+  background-color: #404040;
+  cursor: pointer;
+}
+.circle-red {
+  background-color: #d62c1a;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 15px;
+  border-radius: 50%;
+  -webkit-transition: .1s;
+  transition: .1s;
+}
+.circle-gray {
+  background-color: #555;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 15px;
+  border-radius: 50%;
+  -webkit-transition: .1s;
+  transition: .1s;
+}
+.circle-green {
+  background-color: #00bc8c;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 15px;
+  border-radius: 50%;
+  -webkit-transition: .1s;
+  transition: .1s;
+}

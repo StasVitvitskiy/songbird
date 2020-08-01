@@ -1,7 +1,7 @@
 import React, {PureComponent} from 'react'
 import "./main.css"
 import bird from '../media/bird.jpg'
-import {Player, PlayerApp} from "~/audioPlayer/audio";
+import {Player} from "~/audioPlayer/audio";
 
 export class Main extends PureComponent {
   render() {
