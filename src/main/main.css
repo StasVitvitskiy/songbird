@@ -1,0 +1,25 @@
+.main-block {
+  font-size: 2rem;
+}
+.bird-block {
+  background-color: #303030;
+  display: flex;
+  width: 100%;
+}
+.bird-block .bird img {
+  border-radius: 10px;
+}
+.list-group {
+  width: 100%;
+}
+.list-group-items li {
+  background-color: #303030;
+  color: white;
+}
+.list-group-items li:first-child {
+  border-bottom-color: gray;
+  border-bottom-width: thin;
+}
+.margin-left-40px {
+  margin-left: 40px
+}

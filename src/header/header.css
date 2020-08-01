@@ -1,6 +1,7 @@
 .header {
   margin-top: .5rem;
   flex-direction: column;
+  color: white;
 }
 
 .header ul.pagination {
@@ -19,8 +20,7 @@
 
 .header ul li a {
   cursor: auto;
-
-  border-radius: 0 !important;
+  border-radius: 0;
 }
 .page-item .page-link {
   background-color: #008966;
@@ -41,7 +41,6 @@
 }
 
 .header .logo {
-  background-image: url("../media/logo.svg");
   width: 200px;
   height: 55px;
   background-size: contain;

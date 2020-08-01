@@ -1,12 +1,27 @@
 import React, { PureComponent} from 'react';
 import "./header.css";
+import logo from '../media/logo.svg'
 
 export class Header extends PureComponent {
+  componentDidMount() {
+    const MENU = document.querySelector('.pagination');
+    MENU.addEventListener('click', (event) => {
+
+      MENU.querySelectorAll('li').forEach(el => {
+        if(activeEl) {
+          console.log(activeEl)
+          activeEl.classList.remove('active');
+        }
+      });
+      event.target.classList.add('active')
+    });
+    }
+
   render() {
     return (
         <div className="header d-flex">
           <div className="top-panel d-flex">
-            <div className="logo"></div>
+            <div className="logo"><img src={logo} alt=""/></div>
             <h5>Score: <span className="score"> this.props.score </span></h5>
           </div>
           <ul className="pagination">
