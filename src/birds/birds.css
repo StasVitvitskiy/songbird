@@ -1,12 +1,16 @@
 .birds {
-  width: 50%;
+
 }
-.bird-container li {
+.bird-container {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+}
+.bird-container .li {
   background-color: #303030;
   color: white;
   border: 1px solid gray;
 }
-.bird-container li:hover {
+.bird-container .li:hover {
   background-color: #404040;
   cursor: pointer;
 }
@@ -39,4 +43,50 @@
   border-radius: 50%;
   -webkit-transition: .1s;
   transition: .1s;
+}
+.bird-pic-description {
+  color: white;
+  border: 1px solid gray;
+  border-radius: 0.25rem;
+}
+.cards img {
+  width: 200px;
+  height: 190px;
+  border-radius: 25px;
+  padding: 10px 10px 0 10px;
+}
+/* for now */
+.bird-pic-description p {
+  display: none;
+}
+.cards {
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+}
+.top-block {
+  display: flex;
+  width: 100%;
+}
+.descr {
+  position: relative;
+  display: block;
+  padding: .75rem 1.25rem;
+  border-bottom: 1px solid gray;
+}
+.group {
+  width: 100%;
+  margin: 0 20px 0 20px;
+}
+.player {
+  padding: 10px;
+}
+ul {
+  margin-bottom: 0;
+}
+li {
+  list-style-type: none;
+}
+.bird-info-cont {
+  padding: 0 10px 0 10px;
 }
