@@ -2,12 +2,7 @@ import React, {PureComponent} from 'react'
 import './birds.css'
 import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
-import finch from '../media/finch.jpg'
-import crossbill from '../media/crossbill.jpg'
-import turtleDove from '../media/turtleDove.jpg'
-import woodpecker from '../media/woodpecker.jpg'
-import hoopoe from '../media/hoopoe.jpg'
-import swift from '../media/swift.jpg'
+import birdsData from "~/birdsData/birdsData";
 
 export class Birds extends PureComponent {
   componentDidMount() {
@@ -21,38 +16,13 @@ export class Birds extends PureComponent {
       const latinBirdInfo = document.querySelector('.latin-bird-info');
       const birdInfoBlock = document.querySelector('.bird-information');
       const birdImg = document.querySelector('.bird-img');
-      switch(titleEl.innerText) {
-        case 'Зяблик':
-          latinBirdInfo.innerText = birdsNamesLatin.finch;
-          birdInfoBlock.innerText = birds.finch;
-          birdImg.src = finch;
-          break;
-        case 'Клест':
-          latinBirdInfo.innerText = birdsNamesLatin.crossbill;
-          birdInfoBlock.innerText = birds.crossbill;
-          birdImg.src = crossbill;
-          break;
-        case 'Горлица':
-          latinBirdInfo.innerText = birdsNamesLatin.turtleDove;
-          birdInfoBlock.innerText = birds.turtleDove;
-          birdImg.src = turtleDove;
-          break;
-        case 'Дятел':
-          latinBirdInfo.innerText = birdsNamesLatin.woodpecker;
-          birdInfoBlock.innerText = birds.woodpecker;
-          birdImg.src = woodpecker;
-          break;
-        case 'Удод':
-          latinBirdInfo.innerText = birdsNamesLatin.hoopoe;
-          birdInfoBlock.innerText = birds.hoopoe;
-          birdImg.src = hoopoe;
-          break;
-        case 'Стриж':
-          latinBirdInfo.innerText = birdsNamesLatin.swift;
-          birdInfoBlock.innerText = birds.swift;
-          birdImg.src = swift;
-          break;
-      }
+      const audioPlayer = document.querySelectorAll('audio');
+      latinBirdInfo.innerText = birdsData[2].find((el) => el.name === target.innerText).species;
+      birdInfoBlock.innerText = birdsData[2].find((el) => el.name === target.innerText).description;
+      birdImg.src = birdsData[2].find((el) => el.name === target.innerText).image;
+      audioPlayer.forEach((elem) => {
+        elem.src = birdsData[2].find((el) => el.name === target.innerText).audio;
+      })
     })
   }
 
@@ -62,7 +32,7 @@ export class Birds extends PureComponent {
         <div className='birds-group'>
           <ul className='list-group'>
             <li className="list-group-item li"><span className='circle-red'/>Зяблик</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Клест</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Клёст</li>
             <li className="list-group-item li"><span className='circle-red'/>Горлица</li>
             <li className="list-group-item li"><span className='circle-green'/>Дятел</li>
             <li className="list-group-item li"><span className='circle-green'/>Удод</li>
