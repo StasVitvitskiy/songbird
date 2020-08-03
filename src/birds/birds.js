@@ -2,12 +2,64 @@ import React, {PureComponent} from 'react'
 import './birds.css'
 import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
+import finch from '../media/finch.jpg'
+import crossbill from '../media/crossbill.jpg'
+import turtleDove from '../media/turtleDove.jpg'
+import woodpecker from '../media/woodpecker.jpg'
+import hoopoe from '../media/hoopoe.jpg'
+import swift from '../media/swift.jpg'
 
 export class Birds extends PureComponent {
+  componentDidMount() {
+    const birdsGroup = document.querySelector('.birds-group ul');
+    birdsGroup.addEventListener('click', (e) => {
+      const target = e.target;
+      const titleEl = document.querySelector('.descr .title');
+      const topTitleEl = document.querySelector('.list-group-item h3')
+      titleEl.innerText = target.innerText;
+      topTitleEl.innerText = target.innerText;
+      const latinBirdInfo = document.querySelector('.latin-bird-info');
+      const birdInfoBlock = document.querySelector('.bird-information');
+      const birdImg = document.querySelector('.bird-img');
+      switch(titleEl.innerText) {
+        case 'Зяблик':
+          latinBirdInfo.innerText = birdsNamesLatin.finch;
+          birdInfoBlock.innerText = birds.finch;
+          birdImg.src = finch;
+          break;
+        case 'Клест':
+          latinBirdInfo.innerText = birdsNamesLatin.crossbill;
+          birdInfoBlock.innerText = birds.crossbill;
+          birdImg.src = crossbill;
+          break;
+        case 'Горлица':
+          latinBirdInfo.innerText = birdsNamesLatin.turtleDove;
+          birdInfoBlock.innerText = birds.turtleDove;
+          birdImg.src = turtleDove;
+          break;
+        case 'Дятел':
+          latinBirdInfo.innerText = birdsNamesLatin.woodpecker;
+          birdInfoBlock.innerText = birds.woodpecker;
+          birdImg.src = woodpecker;
+          break;
+        case 'Удод':
+          latinBirdInfo.innerText = birdsNamesLatin.hoopoe;
+          birdInfoBlock.innerText = birds.hoopoe;
+          birdImg.src = hoopoe;
+          break;
+        case 'Стриж':
+          latinBirdInfo.innerText = birdsNamesLatin.swift;
+          birdInfoBlock.innerText = birds.swift;
+          birdImg.src = swift;
+          break;
+      }
+    })
+  }
+
   render() {
     return <div className='bird-container'>
       <div className='birds rounded'>
-        <div className=''>
+        <div className='birds-group'>
           <ul className='list-group'>
             <li className="list-group-item li"><span className='circle-red'/>Зяблик</li>
             <li className="list-group-item li"><span className='circle-gray'/>Клест</li>
@@ -24,10 +76,10 @@ export class Birds extends PureComponent {
         </p>
         <div className="cards">
           <div className='top-block'>
-            <img src={bird} alt=""/>
+            <img className='bird-img' src={bird} alt=""/>
             <ul className="group">
               <li className="descr"><h4 className='title'>Дятел</h4></li>
-              <li className="descr"><span>Dendrocopos major</span></li>
+              <li className="descr"><span className='latin-bird-info'>Dendrocopos major</span></li>
               <li className="player">
                 <Player/>
               </li>
@@ -68,21 +120,15 @@ const birds = {
       ' Они обитают как в лесных зонах, так и на открытых местностях. Живут стрижи крупными стаями.' +
       ' Большие колонии этих птиц можно увидеть в городах или на прибрежных скалах.',
 }
-const birdsI18N = {
-  finch: 'Зяблик',
-  crossbill: 'Клест',
-  turtleDove: 'Горлица',
-  woodpecker: 'Дятел',
-  hoopoe: 'Удод',
-  swift: 'Стриж'
+const birdsNamesLatin = {
+  finch: 'Fringilla coelebs',
+  crossbill: 'Loxia curvirostra',
+  turtleDove: 'Streptopelia turtur',
+  woodpecker: 'Dendrocopos major',
+  hoopoe: 'Upupa epops',
+  swift: 'Apus apus'
 }
 
-const setTitle = (birdsObj) => {
-  const title = document.getElementsByClassName('title');
-
-
-}
-setTitle(birds)
 /*
 *
 * */
