@@ -8,6 +8,7 @@
 }
 .bird-block .bird img {
   border-radius: 10px;
+  width: 240px;
 }
 .list-group {
   width: 100%;

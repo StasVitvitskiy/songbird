@@ -6,24 +6,24 @@ import birdsData from "~/birdsData/birdsData";
 
 export class Birds extends PureComponent {
   componentDidMount() {
-    const birdsGroup = document.querySelector('.birds-group ul');
-    birdsGroup.addEventListener('click', (e) => {
-      const target = e.target;
-      const titleEl = document.querySelector('.descr .title');
-      const topTitleEl = document.querySelector('.list-group-item h3')
-      titleEl.innerText = target.innerText;
-      topTitleEl.innerText = target.innerText;
-      const latinBirdInfo = document.querySelector('.latin-bird-info');
-      const birdInfoBlock = document.querySelector('.bird-information');
-      const birdImg = document.querySelector('.bird-img');
-      const audioPlayer = document.querySelectorAll('audio');
-      latinBirdInfo.innerText = birdsData[2].find((el) => el.name === target.innerText).species;
-      birdInfoBlock.innerText = birdsData[2].find((el) => el.name === target.innerText).description;
-      birdImg.src = birdsData[2].find((el) => el.name === target.innerText).image;
-      audioPlayer.forEach((elem) => {
-        elem.src = birdsData[2].find((el) => el.name === target.innerText).audio;
-      })
+    let played = false;
+    const cards = document.querySelector('.cards');
+    const p = document.querySelector('p');
+    const audioPlayer = document.querySelector('audio');
+    cards.style.display = 'none';
+    p.style.display = 'flex';
+    p.classList.add('initial');
+    const playBtn = document.querySelector('.rhap_play-pause-button');
+    playBtn.addEventListener('click', () => {
+      cards.style.display = 'flex';
+      p.style.display = 'none';
+      p.classList.remove('initial');
+      if(!played) {
+        audioPlayer.src = playRandom(0);
+        played = true;
+      }
     })
+    birdsFunc()
   }
 
   render() {
@@ -31,12 +31,12 @@ export class Birds extends PureComponent {
       <div className='birds rounded'>
         <div className='birds-group'>
           <ul className='list-group'>
-            <li className="list-group-item li"><span className='circle-red'/>Зяблик</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Клёст</li>
-            <li className="list-group-item li"><span className='circle-red'/>Горлица</li>
-            <li className="list-group-item li"><span className='circle-green'/>Дятел</li>
-            <li className="list-group-item li"><span className='circle-green'/>Удод</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Стриж</li>
+            <li className="list-group-item li"><span className='circle-red'/>Ворон</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Журавль</li>
+            <li className="list-group-item li"><span className='circle-red'/>Ласточка</li>
+            <li className="list-group-item li"><span className='circle-green'/>Козодой</li>
+            <li className="list-group-item li"><span className='circle-green'/>Кукушка</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Синица</li>
           </ul>
         </div>
       </div>
@@ -48,8 +48,8 @@ export class Birds extends PureComponent {
           <div className='top-block'>
             <img className='bird-img' src={bird} alt=""/>
             <ul className="group">
-              <li className="descr"><h4 className='title'>Дятел</h4></li>
-              <li className="descr"><span className='latin-bird-info'>Dendrocopos major</span></li>
+              <li className="descr"><h4 className='title'>Ворон</h4></li>
+              <li className="descr"><span className='latin-bird-info'>Corvus corax</span></li>
               <li className="player">
                 <Player/>
               </li>
@@ -57,7 +57,7 @@ export class Birds extends PureComponent {
           </div>
           <div className='bird-info-cont'>
             <span className="bird-information">
-              {birds.woodpecker}
+              {birds.crow}
               </span>
           </div>
         </div>
@@ -69,36 +69,56 @@ export class Birds extends PureComponent {
   }
 }
 const birds = {
-  finch: 'В дикой природе насчитывается 450 видов зябликов.' +
-      ' Зимой зяблики ведут стайный образ жизни. Иногда в их семьях можно увидеть воробьев.' +
-      ' Запевают зяблики весной, с наступлением брачного периода. Их пение – это заливистые многоминутные рулады.',
-  crossbill: 'Клестов называют «рождественскими» птицами.' +
-      ' В естественных условиях они дают потомство зимой – в январе.' +
-      ' Эти птицы утепляют свои гнезда мхом и шерстью животных, потому птенцам не холодно.' +
-      ' В поисках шишек клесты могут улетать за 3500 км от гнезда.',
-  turtleDove: 'Горлица обитает в смешанных и широколиственных лесах,' +
-      ' а также в городских парках и поселках. Птицы часто выбирают места жизни рядом' +
-      ' с человеком и легко привыкают к людям. Благодаря мелодичному приятному пению' +
-      ' горлиц часто разводят в домашних условиях.',
-  woodpecker: 'Дятел – заметная и шумная птица, часто живет рядом с человеком.' +
-      ' С середины января до конца июня можно услышать «барабанную дробь» дятлов – трель от вибрации веток' +
-      ' под быстрыми ударами клюва птицы. В хорошую погоду дробь слышна в радиусе 1,5 км.',
-  hoopoe: 'Удоды предпочитают жить на открытых ландшафтах с отдельными деревьями или рощами.' +
-      ' Наиболее удобными для птицы являются лесостепь и саванна. Удод может выбирать места жительства' +
-      ' рядом с человеком: пастбища, виноградники, фруктовые сады.',
-  swift: 'Стрижа можно увидеть практически в каждом уголке планеты.' +
-      ' Они обитают как в лесных зонах, так и на открытых местностях. Живут стрижи крупными стаями.' +
-      ' Большие колонии этих птиц можно увидеть в городах или на прибрежных скалах.',
+  crow: 'Ворон – крупная птица. Длина тела достигает 70 сантиметров,' +
+      ' размах крыльев – до полутора метров. Вороны населяют окрестности Тауэра.' +
+      ' В Англии бытует поверье, что в день, когда черные вороны улетят от Тауэра, монархия рухнет.',
 }
-const birdsNamesLatin = {
-  finch: 'Fringilla coelebs',
-  crossbill: 'Loxia curvirostra',
-  turtleDove: 'Streptopelia turtur',
-  woodpecker: 'Dendrocopos major',
-  hoopoe: 'Upupa epops',
-  swift: 'Apus apus'
+const birdsFunc = (index = 0) => {
+  const birdsGroup = document.querySelector('.birds-group ul');
+  birdsGroup.addEventListener('click', (e) => {
+    const target = e.target;
+    const titleEl = document.querySelector('.descr .title');
+    const topTitleEl = document.querySelector('.list-group-item h3')
+    titleEl.innerText = target.innerText;
+    topTitleEl.innerText = target.innerText;
+    const latinBirdInfo = document.querySelector('.latin-bird-info');
+    const birdInfoBlock = document.querySelector('.bird-information');
+    const birdImg = document.querySelector('.bird-img');
+    const audioPlayer = document.querySelectorAll('audio');
+    audioPlayer.preload = false;
+    index = 0;
+    latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
+    birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
+    birdImg.src = birdsData[index].find((el) => el.name === target.innerText).image;
+    audioPlayer.forEach((elem) => {
+      elem.src = birdsData[index].find((el) => el.name === target.innerText).audio;
+    })
+  })
+  const nextLevelBtn = document.querySelector('.btn-next-level');
+  index = 1;
+  nextLevelBtn.addEventListener('click', (e) => {
+    const active = document.querySelector('.page-item.active');
+    const Menu = document.querySelectorAll('.pagination .page-item');
+    active.classList.remove('active');
+    Menu[index++].classList.add('active');
+    if(index === 6) {
+      index = 0;
+    }
+    const cards = document.querySelector('.cards');
+    const p = document.querySelector('p');
+    cards.style.display = 'none';
+    p.style.display = 'flex';
+    p.classList.add('initial');
+  })
 }
-
+const playRandom = (index = 0) => {
+  return birdsData[0].map((el) => {
+    return el.audio
+  })[getRandomArbitrary(0,6)]
+}
+const getRandomArbitrary = (min, max) =>  {
+  return Math.floor(Math.random() * (max - min) + min);
+}
 /*
 *
 * */

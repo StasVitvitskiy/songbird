@@ -1,17 +1,14 @@
 import React, { PureComponent} from 'react';
 import "./header.css";
 import logo from '../media/logo.svg'
+import {Route, NavLink} from "react-router-dom";
 
 export class Header extends PureComponent {
   componentDidMount() {
     const MENU = document.querySelector('.pagination');
     MENU.addEventListener('click', (e) => {
-      const target = e.target;
-      const activeElement = document.querySelector('.page-item.active');
-      activeElement.classList.remove('active');
-      if(!target.parentElement.classList.contains('active')) {
-        target.parentElement.classList.add('active');
-      }
+      e.preventDefault();
+
     })
     }
 
@@ -20,15 +17,15 @@ export class Header extends PureComponent {
         <div className="header d-flex">
           <div className="top-panel d-flex">
             <div className="logo"><img className='logo-img' src={logo} alt=""/></div>
-            <h5>Score: <span className="score"> 4 </span></h5>
+            <h5>Score: <span className="score"> 0 </span></h5>
           </div>
           <ul className="pagination">
-            <li className="page-item active"><a className="page-link" href="/#">Разминка</a></li>
-            <li className="page-item"><a className="page-link" href="/#">Воробьиные</a></li>
-            <li className="page-item"><a className="page-link" href="/#">Лесные птицы</a></li>
-            <li className="page-item"><a className="page-link" href="/#">Певчие птицы</a></li>
-            <li className="page-item"><a className="page-link" href="/#">Хищные птицы</a></li>
-            <li className="page-item"><a className="page-link" href="/#">Морские птицы</a></li>
+            <li className="page-item active"><NavLink className="page-link" to="/#">Разминка</NavLink></li>
+            <li className="page-item"><NavLink className="page-link" to="/passerine-birds">Воробьиные</NavLink></li>
+            <li className="page-item"><NavLink className="page-link" to="/forest-birds">Лесные птицы</NavLink></li>
+            <li className="page-item"><NavLink className="page-link" to="/songbirds">Певчие птицы</NavLink></li>
+            <li className="page-item"><NavLink className="page-link" to="/predator-birds">Хищные птицы</NavLink></li>
+            <li className="page-item"><NavLink className="page-link" to="/sea-birds">Морские птицы</NavLink></li>
           </ul>
         </div>
     );

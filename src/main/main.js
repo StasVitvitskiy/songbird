@@ -11,7 +11,7 @@ export class Main extends PureComponent {
       </div>
       <div className='margin-left-40px bird-info bird-block'>
         <ul className="list-group list-group-items">
-          <li className="list-group-item"><h3>Дятел</h3></li>
+          <li className="list-group-item"><h3>******</h3></li>
           <li className="list-group-item">
             <Player />
           </li>
