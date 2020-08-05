@@ -7,17 +7,14 @@ import birdsData from "~/birdsData/birdsData";
 export class Birds extends PureComponent {
   componentDidMount() {
     let played = false;
+    const audioPlayer = document.querySelector('audio');
+    const playBtn = document.querySelector('.rhap_play-pause-button');
     const cards = document.querySelector('.cards');
     const p = document.querySelector('p');
-    const audioPlayer = document.querySelector('audio');
     cards.style.display = 'none';
     p.style.display = 'flex';
     p.classList.add('initial');
-    const playBtn = document.querySelector('.rhap_play-pause-button');
     playBtn.addEventListener('click', () => {
-      cards.style.display = 'flex';
-      p.style.display = 'none';
-      p.classList.remove('initial');
       if(!played) {
         audioPlayer.src = playRandom(0);
         played = true;
@@ -84,15 +81,18 @@ const birdsFunc = (index = 0) => {
     const latinBirdInfo = document.querySelector('.latin-bird-info');
     const birdInfoBlock = document.querySelector('.bird-information');
     const birdImg = document.querySelector('.bird-img');
-    const audioPlayer = document.querySelectorAll('audio');
+    const audioPlayer = document.querySelectorAll('audio')[1];
+    const cards = document.querySelector('.cards');
+    const p = document.querySelector('p');
+    cards.style.display = 'flex';
+    p.style.display = 'none';
+    p.classList.remove('initial');
     audioPlayer.preload = false;
     index = 0;
     latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
     birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
     birdImg.src = birdsData[index].find((el) => el.name === target.innerText).image;
-    audioPlayer.forEach((elem) => {
-      elem.src = birdsData[index].find((el) => el.name === target.innerText).audio;
-    })
+    audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
   })
   const nextLevelBtn = document.querySelector('.btn-next-level');
   index = 1;
