@@ -79,6 +79,7 @@ const birds = {
 const birdsFunc = (index = 0) => {
   const birdsGroup = document.querySelector('.birds-group ul');
   const nextLevelBtn = document.querySelector('.btn-next-level');
+  let count = 0;
   birdsGroup.addEventListener('click', (e) => {
     const target = e.target;
     const titleEl = document.querySelector('.descr .title');
@@ -101,15 +102,19 @@ const birdsFunc = (index = 0) => {
     birdImg.src = birdsData[index].find((el) => el.name === target.innerText).image;
     audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
     const nextBtn = document.querySelector('.btn-next-level button')
+    const score = document.querySelector('.score');
+    console.log(score.innerText);
     let selectedAudio = audioPlayer.src;
       if(selectedAudio === playedAudio) {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-green');
         nextBtn.classList.add('btn-next');
+        score.innerText = scoreFunction(count);
 
       } else {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-red');
+        count+=1;
       }
   })
   index = 1;
@@ -135,6 +140,30 @@ const playRandom = (index = 0) => {
 }
 const getRandomArbitrary = (min, max) =>  {
   return Math.floor(Math.random() * (max - min) + min);
+}
+const scoreFunction = (attempts) => {
+  let score = 0;
+  switch(attempts) {
+    case 0:
+      score+=5;
+      break;
+    case 1:
+      score+=4;
+      break;
+    case 2:
+      score+=3;
+      break;
+    case 3:
+      score+=2;
+      break;
+    case 4:
+      score+=1;
+      break;
+    default:
+      score+=0;
+      break;
+  }
+  return score;
 }
 /*
 *
