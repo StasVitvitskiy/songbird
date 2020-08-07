@@ -3,6 +3,10 @@ import './birds.css'
 import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
 import birdsData from "~/birdsData/birdsData";
+// import win from '../media/win.mp3';
+// import lose from '../media/lose.mp3'
+
+let playedAudio = '';
 
 export class Birds extends PureComponent {
   componentDidMount() {
@@ -18,9 +22,11 @@ export class Birds extends PureComponent {
       if(!played) {
         audioPlayer.src = playRandom(0);
         played = true;
+        playedAudio = audioPlayer.src;
+        console.log("PLAYED AUDIO: ", playedAudio)
       }
     })
-    birdsFunc()
+    birdsFunc();
   }
 
   render() {
@@ -28,11 +34,11 @@ export class Birds extends PureComponent {
       <div className='birds rounded'>
         <div className='birds-group'>
           <ul className='list-group'>
-            <li className="list-group-item li"><span className='circle-red'/>Ворон</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Ворон</li>
             <li className="list-group-item li"><span className='circle-gray'/>Журавль</li>
-            <li className="list-group-item li"><span className='circle-red'/>Ласточка</li>
-            <li className="list-group-item li"><span className='circle-green'/>Козодой</li>
-            <li className="list-group-item li"><span className='circle-green'/>Кукушка</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Ласточка</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Козодой</li>
+            <li className="list-group-item li"><span className='circle-gray'/>Кукушка</li>
             <li className="list-group-item li"><span className='circle-gray'/>Синица</li>
           </ul>
         </div>
@@ -60,7 +66,7 @@ export class Birds extends PureComponent {
         </div>
       </div>
       <div className='btn-next-level'>
-        <button className='btn-next btn next-level'>Next level</button>
+        <button className='btn next-level'>Next level</button>
       </div>
     </div>
   }
@@ -72,6 +78,7 @@ const birds = {
 }
 const birdsFunc = (index = 0) => {
   const birdsGroup = document.querySelector('.birds-group ul');
+  const nextLevelBtn = document.querySelector('.btn-next-level');
   birdsGroup.addEventListener('click', (e) => {
     const target = e.target;
     const titleEl = document.querySelector('.descr .title');
@@ -93,8 +100,18 @@ const birdsFunc = (index = 0) => {
     birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
     birdImg.src = birdsData[index].find((el) => el.name === target.innerText).image;
     audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
+    const nextBtn = document.querySelector('.btn-next-level button')
+    let selectedAudio = audioPlayer.src;
+      if(selectedAudio === playedAudio) {
+        target.childNodes[0].classList.remove('circle-gray');
+        target.childNodes[0].classList.add('circle-green');
+        nextBtn.classList.add('btn-next');
+
+      } else {
+        target.childNodes[0].classList.remove('circle-gray');
+        target.childNodes[0].classList.add('circle-red');
+      }
   })
-  const nextLevelBtn = document.querySelector('.btn-next-level');
   index = 1;
   nextLevelBtn.addEventListener('click', (e) => {
     const active = document.querySelector('.page-item.active');

@@ -98,7 +98,6 @@ li {
 }
 .next-level:hover {
   color: white;
-  background-color: #00EFB2;
 }
 .btn-next-level {
   grid-column-start: 1;
