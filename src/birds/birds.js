@@ -3,33 +3,26 @@ import './birds.css'
 import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
 import birdsData from "~/birdsData/birdsData";
-// import win from '../media/win.mp3';
-// import lose from '../media/lose.mp3'
+import win from '../media/win.mp3';
+import lose from '../media/lose.mp3'
 
 let playedAudio = '';
-
+let audioIndex = 0;
 export class Birds extends PureComponent {
   componentDidMount() {
-    let played = false;
-    const audioPlayer = document.querySelector('audio');
-    const playBtn = document.querySelector('.rhap_play-pause-button');
+    console.log('mount')
     const cards = document.querySelector('.cards');
     const p = document.querySelector('p');
     cards.style.display = 'none';
     p.style.display = 'flex';
     p.classList.add('initial');
-    playBtn.addEventListener('click', () => {
-      if(!played) {
-        audioPlayer.src = playRandom(0);
-        played = true;
-        playedAudio = audioPlayer.src;
-        console.log("PLAYED AUDIO: ", playedAudio)
-      }
-    })
+    console.log(audioIndex, ' Audio Index')
+    playFunc();
     birdsFunc();
   }
 
   render() {
+    console.log('render')
     return <div className='bird-container'>
       <div className='birds rounded'>
         <div className='birds-group'>
@@ -80,61 +73,80 @@ const birdsFunc = (index = 0) => {
   const birdsGroup = document.querySelector('.birds-group ul');
   const nextLevelBtn = document.querySelector('.btn-next-level');
   let count = 0;
+  const nextBtn = document.querySelector('.btn-next-level button')
+  const titleEl = document.querySelector('.descr .title');
+  const topTitleEl = document.querySelector('.list-group-item h3')
+  const latinBirdInfo = document.querySelector('.latin-bird-info');
+  const birdInfoBlock = document.querySelector('.bird-information');
+  const birdImg = document.querySelectorAll('.bird-img');
+  const audioPlayer = document.querySelectorAll('audio')[1];
+  const cards = document.querySelector('.cards');
+  const p = document.querySelector('p');
   birdsGroup.addEventListener('click', (e) => {
     const target = e.target;
-    const titleEl = document.querySelector('.descr .title');
-    const topTitleEl = document.querySelector('.list-group-item h3')
     titleEl.innerText = target.innerText;
     topTitleEl.innerText = target.innerText;
-    const latinBirdInfo = document.querySelector('.latin-bird-info');
-    const birdInfoBlock = document.querySelector('.bird-information');
-    const birdImg = document.querySelector('.bird-img');
-    const audioPlayer = document.querySelectorAll('audio')[1];
-    const cards = document.querySelector('.cards');
-    const p = document.querySelector('p');
     cards.style.display = 'flex';
     p.style.display = 'none';
     p.classList.remove('initial');
     audioPlayer.preload = false;
-    index = 0;
     latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
     birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
-    birdImg.src = birdsData[index].find((el) => el.name === target.innerText).image;
+    birdImg[1].src = birdsData[index].find((el) => el.name === target.innerText).image
     audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
-    const nextBtn = document.querySelector('.btn-next-level button')
     const score = document.querySelector('.score');
-    console.log(score.innerText);
     let selectedAudio = audioPlayer.src;
       if(selectedAudio === playedAudio) {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-green');
+        let audio = new Audio(win)
+        audio.play()
         nextBtn.classList.add('btn-next');
         score.innerText = scoreFunction(count);
-
+        birdImg[0].src = birdsData[index].find((el) => el.name === target.innerText).image
       } else {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-red');
+        let audio = new Audio(lose);
+        audio.play()
         count+=1;
       }
   })
-  index = 1;
   nextLevelBtn.addEventListener('click', (e) => {
-    const active = document.querySelector('.page-item.active');
-    const Menu = document.querySelectorAll('.pagination .page-item');
-    active.classList.remove('active');
-    Menu[index++].classList.add('active');
-    if(index === 6) {
-      index = 0;
+    console.log('index: ', index)
+    if(!nextBtn.classList.contains('btn-next')) {
+      e.preventDefault();
+    } else {
+      audioIndex+=1;
+      console.log('audio ind', audioIndex)
+      topTitleEl.innerText = '******';
+      birdImg[0].src = bird;
+      const active = document.querySelector('.page-item.active');
+      const Menu = document.querySelectorAll('.pagination .page-item');
+      const cards = document.querySelector('.cards');
+      const p = document.querySelector('p');
+      cards.style.display = 'none';
+      p.style.display = 'flex';
+      p.classList.add('initial');
+      const birdsElements = document.querySelectorAll('.birds-group ul li');
+      console.log("Birds ELEMENTS: ", birdsElements)
+      index = 1;
+      for(let i = 0; i < birdsGroup.childNodes.length; i++) {
+        birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
+        console.log('INNER:', birdsElements[i].innerText, birdsData[index][i].name)
+      }
+      active.classList.remove('active');
+      Menu[index++].classList.add('active');
+      console.log(index, 'INDEX')
+      nextBtn.classList.remove('btn-next');
+      if (index === 6) {
+        index = 0;
+      }
     }
-    const cards = document.querySelector('.cards');
-    const p = document.querySelector('p');
-    cards.style.display = 'none';
-    p.style.display = 'flex';
-    p.classList.add('initial');
   })
 }
 const playRandom = (index = 0) => {
-  return birdsData[0].map((el) => {
+  return birdsData[index].map((el) => {
     return el.audio
   })[getRandomArbitrary(0,6)]
 }
@@ -164,6 +176,18 @@ const scoreFunction = (attempts) => {
       break;
   }
   return score;
+}
+const playFunc = () => {
+  let played = false;
+  const audioPlayer = document.querySelector('audio');
+  const playBtn = document.querySelector('.rhap_play-pause-button');
+  playBtn.addEventListener('click', () => {
+    if(!played) {
+      audioPlayer.src = playRandom(audioIndex);
+      played = true;
+      playedAudio = audioPlayer.src;
+    }
+  })
 }
 /*
 *

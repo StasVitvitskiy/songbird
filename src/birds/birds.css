@@ -107,3 +107,6 @@ li {
   flex-direction: column;
   padding: 15px 15px;
 }
+.bird img {
+  max-height: 190px;
+}
