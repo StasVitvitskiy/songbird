@@ -2,15 +2,17 @@ import React, { PureComponent} from 'react';
 import "./header.css";
 import logo from '../media/logo.svg'
 import {Route, NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import {appActions} from "~/store";
+
 
 export class Header extends PureComponent {
   componentDidMount() {
     const MENU = document.querySelector('.pagination');
     MENU.addEventListener('click', (e) => {
       e.preventDefault();
-
     })
-    }
+  }
 
   render() {
     return (
@@ -30,4 +32,4 @@ export class Header extends PureComponent {
         </div>
     );
   }
-};
+}

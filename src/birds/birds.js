@@ -10,19 +10,16 @@ let playedAudio = '';
 let audioIndex = 0;
 export class Birds extends PureComponent {
   componentDidMount() {
-    console.log('mount')
     const cards = document.querySelector('.cards');
     const p = document.querySelector('p');
     cards.style.display = 'none';
     p.style.display = 'flex';
     p.classList.add('initial');
-    console.log(audioIndex, ' Audio Index')
     playFunc();
     birdsFunc();
   }
 
   render() {
-    console.log('render')
     return <div className='bird-container'>
       <div className='birds rounded'>
         <div className='birds-group'>
@@ -47,7 +44,7 @@ export class Birds extends PureComponent {
               <li className="descr"><h4 className='title'>Ворон</h4></li>
               <li className="descr"><span className='latin-bird-info'>Corvus corax</span></li>
               <li className="player">
-                <Player/>
+                <Player />
               </li>
             </ul>
           </div>
@@ -82,14 +79,35 @@ const birdsFunc = (index = 0) => {
   const audioPlayer = document.querySelectorAll('audio')[1];
   const cards = document.querySelector('.cards');
   const p = document.querySelector('p');
+  let to = '';
   birdsGroup.addEventListener('click', (e) => {
+    switch(to) {
+      case 'Воробьиные':
+        index = 1;
+        console.log('audioPlayer!!!', audioPlayer);
+        break;
+      case 'Лесные птицы':
+        index = 2;
+        break;
+      case 'Певчие птицы':
+        index = 3;
+      break;
+      case 'Хищные птицы':
+        index = 4;
+        break;
+      case 'Морские птицы':
+        index = 5;
+        break;
+      default:
+        index = 0;
+        break;
+    }
     const target = e.target;
     titleEl.innerText = target.innerText;
     topTitleEl.innerText = target.innerText;
     cards.style.display = 'flex';
     p.style.display = 'none';
     p.classList.remove('initial');
-    audioPlayer.preload = false;
     latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
     birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
     birdImg[1].src = birdsData[index].find((el) => el.name === target.innerText).image
@@ -113,12 +131,10 @@ const birdsFunc = (index = 0) => {
       }
   })
   nextLevelBtn.addEventListener('click', (e) => {
-    console.log('index: ', index)
     if(!nextBtn.classList.contains('btn-next')) {
       e.preventDefault();
     } else {
       audioIndex+=1;
-      console.log('audio ind', audioIndex)
       topTitleEl.innerText = '******';
       birdImg[0].src = bird;
       const active = document.querySelector('.page-item.active');
@@ -129,7 +145,6 @@ const birdsFunc = (index = 0) => {
       p.style.display = 'flex';
       p.classList.add('initial');
       const birdsElements = document.querySelectorAll('.birds-group ul li');
-      console.log("Birds ELEMENTS: ", birdsElements)
       index = 1;
       for(let i = 0; i < birdsGroup.childNodes.length; i++) {
         birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
@@ -137,7 +152,30 @@ const birdsFunc = (index = 0) => {
       }
       active.classList.remove('active');
       Menu[index++].classList.add('active');
-      console.log(index, 'INDEX')
+      let activeElement = document.querySelector('.page-item.active');
+      to = activeElement.innerText;
+      console.log(audioPlayer.src, typeof audioPlayer.src, "TO: ",to)
+      switch(to) {
+        case 'Воробьиные':
+          audioPlayer.src = playFunc()
+            console.log(audioPlayer.src, 'SRC')
+          break;
+        case 'Лесные птицы':
+          index = 2;
+          break;
+        case 'Певчие птицы':
+          index = 3;
+          break;
+        case 'Хищные птицы':
+          index = 4;
+          break;
+        case 'Морские птицы':
+          index = 5;
+          break;
+        default:
+          index = 0;
+          break;
+      }
       nextBtn.classList.remove('btn-next');
       if (index === 6) {
         index = 0;
@@ -178,6 +216,7 @@ const scoreFunction = (attempts) => {
   return score;
 }
 const playFunc = () => {
+  console.log(audioIndex, 'AUDIO INDEX')
   let played = false;
   const audioPlayer = document.querySelector('audio');
   const playBtn = document.querySelector('.rhap_play-pause-button');
