@@ -271,6 +271,10 @@ const finalPage = () => {
   const score = document.querySelector('.score');
   const resultEl = document.querySelector('.score-span');
   resultEl.innerText = score.innerText;
+  const tryAgainBtn = document.querySelector('.try-again');
+  tryAgainBtn.addEventListener('click', () => {
+    location.reload();
+  })
 }
 /*
 *
