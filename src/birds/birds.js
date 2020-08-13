@@ -5,9 +5,13 @@ import {Player} from "~/audioPlayer/audio";
 import birdsData from "~/birdsData/birdsData";
 import win from '../media/win.mp3';
 import lose from '../media/lose.mp3'
+import {Header} from "~/header/header";
 
 let playedAudio = '';
 let audioIndex = 0;
+let score = 0;
+export let finalScore = 0;
+let result = false;
 export class Birds extends PureComponent {
   componentDidMount() {
     const cards = document.querySelector('.cards');
@@ -84,7 +88,6 @@ const birdsFunc = (index = 0) => {
     switch(to) {
       case 'Воробьиные':
         index = 1;
-        console.log('audioPlayer!!!', audioPlayer);
         break;
       case 'Лесные птицы':
         index = 2;
@@ -120,6 +123,9 @@ const birdsFunc = (index = 0) => {
         let audio = new Audio(win)
         audio.play()
         nextBtn.classList.add('btn-next');
+        if(index === 5) {
+          nextBtn.innerText = 'Results';
+        }
         score.innerText = scoreFunction(count);
         birdImg[0].src = birdsData[index].find((el) => el.name === target.innerText).image
       } else {
@@ -133,11 +139,15 @@ const birdsFunc = (index = 0) => {
   nextLevelBtn.addEventListener('click', (e) => {
     if(!nextBtn.classList.contains('btn-next')) {
       e.preventDefault();
+    } else if(nextBtn.innerText === 'Results') {
+      finalPage();
+      result = true;
+      const score = document.querySelector('.score');
+      finalScore = score.innerText;
     } else {
       switch(to) {
         case 'Воробьиные':
           index = 1;
-          console.log('audioPlayer!!!', audioPlayer);
           break;
         case 'Лесные птицы':
           index = 2;
@@ -169,7 +179,6 @@ const birdsFunc = (index = 0) => {
       index+=1;
       for(let i = 0; i < birdsGroup.childNodes.length; i++) {
         birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
-        console.log('INNER:', birdsElements[i].innerText, birdsData[index][i].name)
       }
       active.classList.remove('active');
       const progressBar = document.querySelector('.rhap_progress-indicator');
@@ -179,29 +188,24 @@ const birdsFunc = (index = 0) => {
       const curTime = document.getElementById('rhap_current-time');
       curTime.innerText = '00:00';
       Menu[index].classList.add('active');
+      count = 0;
       let activeElement = document.querySelector('.page-item.active');
       to = activeElement.innerText;
-      console.log('to where: ', to);
       switch(to) {
         case 'Воробьиные':
           audioPlayer.src = playFunc()
-            console.log(audioPlayer.src, 'Воробьиные')
           break;
         case 'Лесные птицы':
           audioPlayer.src = playFunc()
-          console.log(audioPlayer.src, 'Лесные птицы')
           break;
         case 'Певчие птицы':
           audioPlayer.src = playFunc()
-          console.log(audioPlayer.src, 'Певчие птицы')
           break;
         case 'Хищные птицы':
           audioPlayer.src = playFunc()
-          console.log(audioPlayer.src, 'Хищные птицы')
           break;
         case 'Морские птицы':
           audioPlayer.src = playFunc()
-          console.log(audioPlayer.src, 'Морские птицы')
           break;
         default:
           index = 0;
@@ -223,7 +227,6 @@ const getRandomArbitrary = (min, max) =>  {
   return Math.floor(Math.random() * (max - min) + min);
 }
 const scoreFunction = (attempts) => {
-  let score = 0;
   switch(attempts) {
     case 0:
       score+=5;
@@ -247,7 +250,6 @@ const scoreFunction = (attempts) => {
   return score;
 }
 const playFunc = () => {
-  console.log(audioIndex, 'AUDIO INDEX')
   let played = false;
   const audioPlayer = document.querySelector('audio');
   const playBtn = document.querySelector('.rhap_play-pause-button');
@@ -258,6 +260,17 @@ const playFunc = () => {
       playedAudio = audioPlayer.src;
     }
   })
+}
+const finalPage = () => {
+  const birdBlock = document.querySelector('.bird-block');
+  const birdContainer = document.querySelector('.bird-container');
+  birdBlock.style.display = 'none';
+  birdContainer.style.display = 'none';
+  const finalPage = document.querySelector('.final-page');
+  finalPage.style.display = 'flex';
+  const score = document.querySelector('.score');
+  const resultEl = document.querySelector('.score-span');
+  resultEl.innerText = score.innerText;
 }
 /*
 *
