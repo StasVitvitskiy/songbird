@@ -172,6 +172,12 @@ const birdsFunc = (index = 0) => {
         console.log('INNER:', birdsElements[i].innerText, birdsData[index][i].name)
       }
       active.classList.remove('active');
+      const progressBar = document.querySelector('.rhap_progress-indicator');
+      progressBar.style.left = '0';
+      const progressFilled = document.querySelector('.rhap_progress-filled');
+      progressFilled.style.width = '0';
+      const curTime = document.getElementById('rhap_current-time');
+      curTime.innerText = '00:00';
       Menu[index].classList.add('active');
       let activeElement = document.querySelector('.page-item.active');
       to = activeElement.innerText;
