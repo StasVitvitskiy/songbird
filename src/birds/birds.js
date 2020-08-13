@@ -134,31 +134,10 @@ const birdsFunc = (index = 0) => {
     if(!nextBtn.classList.contains('btn-next')) {
       e.preventDefault();
     } else {
-      audioIndex+=1;
-      topTitleEl.innerText = '******';
-      birdImg[0].src = bird;
-      const active = document.querySelector('.page-item.active');
-      const Menu = document.querySelectorAll('.pagination .page-item');
-      const cards = document.querySelector('.cards');
-      const p = document.querySelector('p');
-      cards.style.display = 'none';
-      p.style.display = 'flex';
-      p.classList.add('initial');
-      const birdsElements = document.querySelectorAll('.birds-group ul li');
-      index = 1;
-      for(let i = 0; i < birdsGroup.childNodes.length; i++) {
-        birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
-        console.log('INNER:', birdsElements[i].innerText, birdsData[index][i].name)
-      }
-      active.classList.remove('active');
-      Menu[index++].classList.add('active');
-      let activeElement = document.querySelector('.page-item.active');
-      to = activeElement.innerText;
-      console.log(audioPlayer.src, typeof audioPlayer.src, "TO: ",to)
       switch(to) {
         case 'Воробьиные':
-          audioPlayer.src = playFunc()
-            console.log(audioPlayer.src, 'SRC')
+          index = 1;
+          console.log('audioPlayer!!!', audioPlayer);
           break;
         case 'Лесные птицы':
           index = 2;
@@ -171,6 +150,52 @@ const birdsFunc = (index = 0) => {
           break;
         case 'Морские птицы':
           index = 5;
+          break;
+        default:
+          index = 0;
+          break;
+      }
+      audioIndex+=1;
+      topTitleEl.innerText = '******';
+      birdImg[0].src = bird;
+      const active = document.querySelector('.page-item.active');
+      const Menu = document.querySelectorAll('.pagination .page-item');
+      const cards = document.querySelector('.cards');
+      const p = document.querySelector('p');
+      cards.style.display = 'none';
+      p.style.display = 'flex';
+      p.classList.add('initial');
+      const birdsElements = document.querySelectorAll('.birds-group ul li');
+      index+=1;
+      for(let i = 0; i < birdsGroup.childNodes.length; i++) {
+        birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
+        console.log('INNER:', birdsElements[i].innerText, birdsData[index][i].name)
+      }
+      active.classList.remove('active');
+      Menu[index].classList.add('active');
+      let activeElement = document.querySelector('.page-item.active');
+      to = activeElement.innerText;
+      console.log('to where: ', to);
+      switch(to) {
+        case 'Воробьиные':
+          audioPlayer.src = playFunc()
+            console.log(audioPlayer.src, 'Воробьиные')
+          break;
+        case 'Лесные птицы':
+          audioPlayer.src = playFunc()
+          console.log(audioPlayer.src, 'Лесные птицы')
+          break;
+        case 'Певчие птицы':
+          audioPlayer.src = playFunc()
+          console.log(audioPlayer.src, 'Певчие птицы')
+          break;
+        case 'Хищные птицы':
+          audioPlayer.src = playFunc()
+          console.log(audioPlayer.src, 'Хищные птицы')
+          break;
+        case 'Морские птицы':
+          audioPlayer.src = playFunc()
+          console.log(audioPlayer.src, 'Морские птицы')
           break;
         default:
           index = 0;
