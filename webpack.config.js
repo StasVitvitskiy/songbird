@@ -28,19 +28,7 @@ module.exports = {
       },
 
       {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'svg-inline-loader',
-            options: {
-              removeSVGTagAttrs: false,
-            },
-          },
-        ],
-      },
-
-      {
-        test: /\.(png|jpe?g|gif|ogg|mp3|wav|mpe?g)$/i,
+        test: /\.(png|jpe?g|gif|ogg|mp3|wav|mpe?g|svg)$/i,
         use: [
           {
             loader: 'file-loader',

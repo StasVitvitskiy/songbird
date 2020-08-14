@@ -46,6 +46,9 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
+.header .logo img {
+  width: 100%;
+}
 
 .score {
   line-height: 55px;

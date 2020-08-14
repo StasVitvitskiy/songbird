@@ -18,7 +18,7 @@ export class Header extends PureComponent {
     return (
         <div className="header d-flex">
           <div className="top-panel d-flex">
-            <div className="logo"><img className='logo-img' src={logo} alt=""/></div>
+            <div className="logo"><img src={logo} alt=""/></div>
             <h5>Score: <span className="score"> 0 </span></h5>
           </div>
           <ul className="pagination">
