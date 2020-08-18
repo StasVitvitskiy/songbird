@@ -4,8 +4,8 @@ import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
 import birdsData from "~/birdsData/birdsData";
 import win from '../media/win.mp3';
-import lose from '../media/lose.mp3'
-import {Header} from "~/header/header";
+import lose from '../media/lose.mp3';
+import perfect from '../media/ultimateWin.mp3'
 
 let playedAudio = '';
 let audioIndex = 0;
@@ -70,7 +70,8 @@ const birds = {
       ' размах крыльев – до полутора метров. Вороны населяют окрестности Тауэра.' +
       ' В Англии бытует поверье, что в день, когда черные вороны улетят от Тауэра, монархия рухнет.',
 }
-const birdsFunc = (index = 0) => {
+const birdsFunc = (index = 0,lang = 'ru') => {
+  l18nFunc('en',index);
   const birdsGroup = document.querySelector('.birds-group ul');
   const nextLevelBtn = document.querySelector('.btn-next-level');
   let count = 0;
@@ -271,12 +272,23 @@ const finalPage = () => {
   finalPage.style.display = 'flex';
   const score = document.querySelector('.score');
   const resultEl = document.querySelector('.score-span');
-  resultEl.innerText = score.innerText;
+  if(resultEl.innerText === '30') {
+    document.querySelector('.congrats').style.display = 'none';
+    document.querySelector('.perfect').style.display = 'block';
+    let audio = new Audio(perfect);
+    audio.play();
+  } else {
+    resultEl.innerText = score.innerText;
+    document.querySelector('.perfect').style.display = 'none';
+    document.querySelector('.congrats').style.display = 'block';
+  }
   const tryAgainBtn = document.querySelector('.try-again');
   tryAgainBtn.addEventListener('click', () => {
     location.reload();
   })
 }
-/*
-*
-* */
+const l18nFunc = (lang = 'ru',index = 0) => {
+  if(lang === 'en') {
+    console.log(birdsData, index)
+  }
+}
