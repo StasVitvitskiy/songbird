@@ -117,11 +117,12 @@ const birdsFunc = (index = 0) => {
     audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
     const score = document.querySelector('.score');
     let selectedAudio = audioPlayer.src;
-      if(selectedAudio === playedAudio) {
+      if(selectedAudio === playedAudio && !nextBtn.classList.contains('btn-next')) {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-green');
+        document.querySelector("#root > div > div.bird-block.rounded.jumbotron > div.margin-left-40px.bird-info.bird-block > ul > li:nth-child(2) > div > audio").pause();
         let audio = new Audio(win)
-        audio.play()
+        audio.play();
         nextBtn.classList.add('btn-next');
         if(index === 5) {
           nextBtn.innerText = 'Results';

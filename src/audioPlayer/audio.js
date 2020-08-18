@@ -7,8 +7,8 @@ import './audio.css'
 export const Player = () => (
     <AudioPlayer
         src = ''
-        onPlay={e => console.log("onPlay")}
-        // other props here
+        autoPlayAfterSrcChange={false}
+        onPause={false}
     />
 );
 
