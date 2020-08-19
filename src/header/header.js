@@ -1,9 +1,7 @@
 import React, { PureComponent} from 'react';
 import "./header.css";
 import logo from '../media/logo.svg'
-import {Route, NavLink} from "react-router-dom";
-import {connect} from "react-redux";
-import {appActions} from "~/store";
+import {NavLink} from "react-router-dom";
 
 
 export class Header extends PureComponent {

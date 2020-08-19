@@ -4,17 +4,22 @@ import {Header} from './header/header'
 import {Main} from "~/main/main";
 import {Birds} from "~/birds/birds";
 import {FinalPage} from './finalPage/finalPage'
-import {Route} from 'react-router-dom';
 
 export class App extends PureComponent {
+  componentDidMount() {
+    if(String(window.location.href).endsWith('/birds')) {
+      document.querySelector('body').style.background = '#222';
+    }
+  }
+
   render() {
-    return <div className="main">
-          <Route path ='/'>
-            <Header />
-            <FinalPage />
-            <Main />
-            <Birds />
-          </Route>
-    </div>
+    return(
+        <div className='main'>
+          <Header />
+          <FinalPage />
+          <Main />
+          <Birds />
+        </div>
+    )
   }
 }

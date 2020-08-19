@@ -71,7 +71,6 @@ const birds = {
       ' В Англии бытует поверье, что в день, когда черные вороны улетят от Тауэра, монархия рухнет.',
 }
 const birdsFunc = (index = 0,lang = 'ru') => {
-  l18nFunc('en',index);
   const birdsGroup = document.querySelector('.birds-group ul');
   const nextLevelBtn = document.querySelector('.btn-next-level');
   let count = 0;
@@ -90,12 +89,12 @@ const birdsFunc = (index = 0,lang = 'ru') => {
     const target = e.target;
     if(target.tagName === 'path' || target.tagName === 'svg') {
       clicked = true;
-      document.querySelector('.listen').classList.remove('shake');
+      document.querySelector('.listen').classList.remove('play');
     }
   })
   birdsGroup.addEventListener('click', (e) => {
     if(!clicked) {
-      document.querySelector('.listen').classList.add('shake');
+      document.querySelector('.listen').classList.add('play');
     } else {
       switch(to) {
         case 'Воробьиные':
@@ -299,9 +298,4 @@ const finalPage = () => {
   tryAgainBtn.addEventListener('click', () => {
     location.reload();
   })
-}
-const l18nFunc = (lang = 'ru',index = 0) => {
-  if(lang === 'en') {
-    console.log(birdsData, index)
-  }
 }
