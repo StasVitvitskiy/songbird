@@ -39,7 +39,7 @@ export class Birds extends PureComponent {
       </div>
       <div className='bird-pic-description'>
         <p>
-          <span>Послушайте плеер.</span><span>Выберите птицу из списка</span>
+          <span className='listen'>Послушайте плеер.</span><span>Выберите птицу из списка</span>
         </p>
         <div className="cards">
           <div className='top-block'>
@@ -85,39 +85,50 @@ const birdsFunc = (index = 0,lang = 'ru') => {
   const cards = document.querySelector('.cards');
   const p = document.querySelector('p');
   let to = '';
-  birdsGroup.addEventListener('click', (e) => {
-    switch(to) {
-      case 'Воробьиные':
-        index = 1;
-        break;
-      case 'Лесные птицы':
-        index = 2;
-        break;
-      case 'Певчие птицы':
-        index = 3;
-      break;
-      case 'Хищные птицы':
-        index = 4;
-        break;
-      case 'Морские птицы':
-        index = 5;
-        break;
-      default:
-        index = 0;
-        break;
-    }
+  let clicked = false;
+  document.querySelector('.rhap_play-pause-button').addEventListener('click', (e) => {
     const target = e.target;
-    titleEl.innerText = target.innerText;
-    topTitleEl.innerText = target.innerText;
-    cards.style.display = 'flex';
-    p.style.display = 'none';
-    p.classList.remove('initial');
-    latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
-    birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
-    birdImg[1].src = birdsData[index].find((el) => el.name === target.innerText).image
-    audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
-    const score = document.querySelector('.score');
-    let selectedAudio = audioPlayer.src;
+    if(target.tagName === 'path' || target.tagName === 'svg') {
+      clicked = true;
+      document.querySelector('.listen').classList.remove('shake');
+    }
+  })
+  birdsGroup.addEventListener('click', (e) => {
+    if(!clicked) {
+      document.querySelector('.listen').classList.add('shake');
+    } else {
+      switch(to) {
+        case 'Воробьиные':
+          index = 1;
+          break;
+        case 'Лесные птицы':
+          index = 2;
+          break;
+        case 'Певчие птицы':
+          index = 3;
+          break;
+        case 'Хищные птицы':
+          index = 4;
+          break;
+        case 'Морские птицы':
+          index = 5;
+          break;
+        default:
+          index = 0;
+          break;
+      }
+      const target = e.target;
+      titleEl.innerText = target.innerText;
+      topTitleEl.innerText = target.innerText;
+      cards.style.display = 'flex';
+      p.style.display = 'none';
+      p.classList.remove('initial');
+      latinBirdInfo.innerText = birdsData[index].find((el) => el.name === target.innerText).species;
+      birdInfoBlock.innerText = birdsData[index].find((el) => el.name === target.innerText).description;
+      birdImg[1].src = birdsData[index].find((el) => el.name === target.innerText).image
+      audioPlayer.src = birdsData[index].find((el) => el.name === target.innerText).audio;
+      const score = document.querySelector('.score');
+      let selectedAudio = audioPlayer.src;
       if(selectedAudio === playedAudio && !nextBtn.classList.contains('btn-next')) {
         target.childNodes[0].classList.remove('circle-gray');
         target.childNodes[0].classList.add('circle-green');
@@ -137,6 +148,7 @@ const birdsFunc = (index = 0,lang = 'ru') => {
         audio.play()
         count+=1;
       }
+    }
   })
   nextLevelBtn.addEventListener('click', (e) => {
     if(!nextBtn.classList.contains('btn-next')) {
@@ -147,6 +159,7 @@ const birdsFunc = (index = 0,lang = 'ru') => {
       const score = document.querySelector('.score');
       finalScore = score.innerText;
     } else {
+      clicked = false;
       switch(to) {
         case 'Воробьиные':
           index = 1;
