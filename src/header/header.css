@@ -1,0 +1,55 @@
+.header {
+  margin-top: .5rem;
+  flex-direction: column;
+  color: white;
+}
+
+.header ul.pagination {
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0;
+  margin-bottom: 25px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.header ul li {
+  flex: auto;
+  text-align: center;
+}
+
+.header ul li a {
+  cursor: auto;
+  border-radius: 0;
+}
+.page-item .page-link {
+  background-color: #008966;
+  border-color: #007c5d;
+  color: white;
+  cursor: pointer;
+}
+
+.page-item.active .page-link {
+  background-color: #00bc8c;
+  border-color: #007c5d;
+}
+
+.top-panel {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  justify-content: space-between;
+}
+
+.header .logo {
+  width: 200px;
+  height: 55px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.header .logo img {
+  width: 100%;
+}
+
+.score {
+  line-height: 55px;
+}
