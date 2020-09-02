@@ -2,46 +2,48 @@ import React, {PureComponent} from 'react'
 import './birds.css'
 import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
-import birdsData from "~/birdsData/birdsData";
+import birdsData from "./birdsData";
 import win from '../media/win.mp3';
 import lose from '../media/lose.mp3';
 import perfect from '../media/ultimateWin.mp3'
+import {connect} from "react-redux";
+import {setBirdsData} from "~/store";
 
-let playedAudio = '';
-let audioIndex = 0;
 let score = 0;
 export let finalScore = 0;
 let result = false;
-export class Birds extends PureComponent {
+class BirdsComponent extends PureComponent {
   componentDidMount() {
-    const cards = document.querySelector('.cards');
-    const p = document.querySelector('p');
-    cards.style.display = 'none';
-    p.style.display = 'flex';
-    p.classList.add('initial');
-    playFunc();
+    this.props.setBirdsData(birdsData)
     birdsFunc();
   }
 
   render() {
+    const {isAudioPlayed, isAudioPlaying, birdsData, audioIndex} = this.props
+    const birdsGroup = birdsData[audioIndex] || []
+
     return <div className='bird-container'>
       <div className='birds rounded'>
         <div className='birds-group'>
           <ul className='list-group'>
-            <li className="list-group-item li"><span className='circle-gray'/>Ворон</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Журавль</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Ласточка</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Козодой</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Кукушка</li>
-            <li className="list-group-item li"><span className='circle-gray'/>Синица</li>
+            {birdsGroup.map(entry => (
+                <li
+                  key={entry.audio}
+                  className="list-group-item li"
+                >
+                  <span className='circle-gray'/>
+                  {entry.name}
+                </li>)
+            )}
           </ul>
         </div>
       </div>
       <div className='bird-pic-description'>
-        <p>
-          <span className='listen'>Послушайте плеер.</span><span>Выберите птицу из списка</span>
+        <p className={isAudioPlayed ? '' : 'initial'} style={{display: isAudioPlayed ? 'none' : 'flex'}}>
+          <span className={(isAudioPlaying || isAudioPlayed) ? 'listen' : 'listen play'}>Послушайте плеер.</span>
+          <span>Выберите птицу из списка</span>
         </p>
-        <div className="cards">
+        <div style={{display: isAudioPlayed ? 'flex' : 'none'}} className="cards">
           <div className='top-block'>
             <img className='bird-img' src={bird} alt=""/>
             <ul className="group">
@@ -65,6 +67,9 @@ export class Birds extends PureComponent {
     </div>
   }
 }
+export const Birds = connect(state => state,{
+  setBirdsData
+})(BirdsComponent)
 const birds = {
   crow: 'Ворон – крупная птица. Длина тела достигает 70 сантиметров,' +
       ' размах крыльев – до полутора метров. Вороны населяют окрестности Тауэра.' +
@@ -85,37 +90,10 @@ const birdsFunc = (index = 0,lang = 'ru') => {
   const p = document.querySelector('p');
   let to = '';
   let clicked = false;
-  document.querySelector('.rhap_play-pause-button').addEventListener('click', (e) => {
-    const target = e.target;
-    if(target.tagName === 'path' || target.tagName === 'svg') {
-      clicked = true;
-      document.querySelector('.listen').classList.remove('play');
-    }
-  })
   birdsGroup.addEventListener('click', (e) => {
     if(!clicked) {
       document.querySelector('.listen').classList.add('play');
     } else {
-      switch(to) {
-        case 'Воробьиные':
-          index = 1;
-          break;
-        case 'Лесные птицы':
-          index = 2;
-          break;
-        case 'Певчие птицы':
-          index = 3;
-          break;
-        case 'Хищные птицы':
-          index = 4;
-          break;
-        case 'Морские птицы':
-          index = 5;
-          break;
-        default:
-          index = 0;
-          break;
-      }
       const target = e.target;
       titleEl.innerText = target.innerText;
       topTitleEl.innerText = target.innerText;
@@ -179,7 +157,7 @@ const birdsFunc = (index = 0,lang = 'ru') => {
           index = 0;
           break;
       }
-      audioIndex+=1;
+      //audioIndex+=1;
       topTitleEl.innerText = '******';
       birdImg[0].src = bird;
       const active = document.querySelector('.page-item.active');
@@ -191,9 +169,9 @@ const birdsFunc = (index = 0,lang = 'ru') => {
       p.classList.add('initial');
       const birdsElements = document.querySelectorAll('.birds-group ul li');
       index+=1;
-      for(let i = 0; i < birdsGroup.childNodes.length; i++) {
-        birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
-      }
+      // for(let i = 0; i < birdsGroup.childNodes.length; i++) {
+      //   birdsElements[i].innerHTML =`<span class="circle-gray"></span>${birdsData[index][i].name}`;
+      // }
       active.classList.remove('active');
       const progressBar = document.querySelector('.rhap_progress-indicator');
       progressBar.style.left = '0';
@@ -232,7 +210,7 @@ const birdsFunc = (index = 0,lang = 'ru') => {
     }
   })
 }
-const playRandom = (index = 0) => {
+export const getRandomSong = (index = 0) => {
   return birdsData[index].map((el) => {
     return el.audio
   })[getRandomArbitrary(0,6)]
@@ -262,18 +240,6 @@ const scoreFunction = (attempts) => {
       break;
   }
   return score;
-}
-const playFunc = () => {
-  let played = false;
-  const audioPlayer = document.querySelector('audio');
-  const playBtn = document.querySelector('.rhap_play-pause-button');
-  playBtn.addEventListener('click', () => {
-    if(!played) {
-      audioPlayer.src = playRandom(audioIndex);
-      played = true;
-      playedAudio = audioPlayer.src;
-    }
-  })
 }
 const finalPage = () => {
   const birdBlock = document.querySelector('.bird-block');

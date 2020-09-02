@@ -2,17 +2,19 @@ import React, {PureComponent} from 'react'
 import './startPage.css'
 
 export class StartPage extends PureComponent {
-  componentDidMount() {
-    document.querySelector('.start').addEventListener('animationstart', (e) => {
-      document.querySelector('.start').innerText = 'SONGBIRD';
-    })
-    document.querySelector('.start').addEventListener("animationend", (e) => {
-      document.querySelector('.start').innerText = '';
-      window.location = '/birds'
-    }, false);
+  state = {
+    text: 'SONGBIRD',
   }
 
   render() {
-    return <div className='start txt'/>
+    return (
+        <div
+            className="start txt"
+            onAnimationEnd={() => {
+              this.setState({text:''});
+              window.location = '/birds/0'
+            }}
+        >{this.state.text}</div>
+    )
   }
 }
