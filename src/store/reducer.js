@@ -6,21 +6,20 @@ export const defaultState = {
   audioSrc: "",
   isAudioPlayed: false,
   isAudioPlaying: false,
-  birdsData: []
+  birdsData: [],
+  selectedBird: null,
+  incorrectAnswers: [],
+  isAnswerCorrect: false,
 }
 
-export const setScore = createAction("SET_SCORE", score => score)
 export const setAudioIndex = createAction("SET_AUDIO_INDEX", audioIndex => audioIndex)
 export const setAudioSrc = createAction("SET_AUDIO_SRC", audioSrc => audioSrc)
 export const setAudioPlayed = createAction('SET_AUDIO_PLAYED',isAudioPlayed => isAudioPlayed)
 export const setAudioPlaying = createAction('SET_AUDIO_PLAYING', isAudioPlaying => isAudioPlaying)
 export const setBirdsData = createAction('SET_BIRDS_DATA', birdsData => birdsData)
+export const setSelectedBird = createAction('SET_SELECTED_BIRD', selectedBird => selectedBird);
 
 export const rootReducer = handleActions({
-  [setScore.toString()]: (state, action) => ({
-    ...state,
-    score: action.payload,
-  }),
   [setAudioIndex.toString()]: (state, {payload}) => ({
     ...state,
     audioIndex: payload,
@@ -40,5 +39,81 @@ export const rootReducer = handleActions({
   [setBirdsData.toString()]: (state, {payload}) => ({
     ...state,
     birdsData: payload
+  }),
+  [setSelectedBird.toString()]: (state, {payload}) => ({
+    ...state,
+    selectedBird: payload,
+    isAnswerCorrect: getIsAnswerCorrect(state, payload.audio === state.audioSrc),
+    incorrectAnswers: getIncorrectAnswersArray(
+        getIsAnswerCorrect(state, payload.audio === state.audioSrc),
+        state.incorrectAnswers,
+        payload
+    ),
+    score: getScore(
+        state,
+        getIsAnswerCorrect(state, payload.audio === state.audioSrc)
+    )
   })
 }, defaultState)
+
+function getScore({score, isAnswerCorrect, incorrectAnswers}, isAnswerCorrectComputed) {
+  if (isAnswerCorrect === false && isAnswerCorrectComputed === true) {
+    return score + Math.max(5 - incorrectAnswers.length, 0);
+    /*
+    * if 0 incorrect answers -> update score by 5
+    * if 1 incorrect answer -> update score by 4
+    * if 2 incorrect answers -> update score by 3
+    * if 3 incorrect answer -> update score by 2
+    * if 4 incorrect answer -> update score by 1
+    * if 5 incorrect answer -> update score by 0
+    * */
+  }
+  return score
+}
+
+function getIsAnswerCorrect({isAnswerCorrect}, isAnswerCorrectComputed) {
+  return isAnswerCorrect || isAnswerCorrectComputed
+}
+
+/*
+* handleActions({
+*   [action.toString()]: (state, action) => ({
+*     ...state,
+*     stateField1: action.payload, // simple field update
+*     stateField2: action.payload === true, // computed value is set
+*   })
+* }, defaultState)
+*
+* equals to
+*
+* function(state = defaultState, action) {
+*   switch (action.type) {
+*     case action1.toString():
+*       return {
+*         ...state,
+*         stateField1: action.payload, // simple field update
+*         stateField2: action.payload === true, // computed value is set
+*       }
+*     default:
+*       return state
+*   }
+* }
+*
+* */
+
+/*
+* { 1: 1 } // field name is of type number
+* { '1': 1 } // field name is of type string
+* { [Date.now()]: 1 } // field name is result of JS expression computation
+* */
+
+function getIncorrectAnswersArray(isAnswerCorrect, incorrectAnswers, answer) {
+  if (isAnswerCorrect || incorrectAnswers.includes(answer.id)) {
+    return incorrectAnswers
+  }
+  return incorrectAnswers.concat(answer.id)
+}
+
+/*
+* {...state, isAnswerCorrect: true} === Object.assign(state, {isAnswerCorrect: true})
+* */

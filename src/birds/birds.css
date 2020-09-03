@@ -108,7 +108,7 @@ li {
   max-height: 190px;
 }
 .play {
-  animation: 3.5s play infinite;
+  animation: 3.5s play;
   text-transform: uppercase;
 }
 @keyframes play {
