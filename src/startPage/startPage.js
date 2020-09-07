@@ -1,20 +1,23 @@
 import React, {PureComponent} from 'react'
 import './startPage.css'
+import {withRouter} from "react-router";
 
-export class StartPage extends PureComponent {
-  state = {
-    text: 'SONGBIRD',
-  }
+export const StartPage = withRouter(
+    class StartPage extends PureComponent {
+      state = {
+        text: 'SONGBIRD',
+      }
 
-  render() {
-    return (
-        <div
-            className="start txt"
-            onAnimationEnd={() => {
-              this.setState({text:''});
-              window.location = '/birds/0'
-            }}
-        >{this.state.text}</div>
-    )
-  }
-}
+      render() {
+        return (
+            <div
+                className="start txt"
+                onAnimationEnd={() => {
+                  this.setState({text: ''});
+                  this.props.history.push('/birds/0')
+                }}
+            >{this.state.text}</div>
+        )
+      }
+    }
+)
