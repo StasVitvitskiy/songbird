@@ -10,6 +10,7 @@ export const defaultState = {
   selectedBird: null,
   incorrectAnswers: [],
   isAnswerCorrect: false,
+  levelsCompleted: 0,
 }
 
 export const setAudioIndex = createAction("SET_AUDIO_INDEX", audioIndex => audioIndex)
@@ -18,6 +19,8 @@ export const setAudioPlayed = createAction('SET_AUDIO_PLAYED',isAudioPlayed => i
 export const setAudioPlaying = createAction('SET_AUDIO_PLAYING', isAudioPlaying => isAudioPlaying)
 export const setBirdsData = createAction('SET_BIRDS_DATA', birdsData => birdsData)
 export const setSelectedBird = createAction('SET_SELECTED_BIRD', selectedBird => selectedBird);
+export const goToNextLevel = createAction('GO_TO_NEXT_LEVEL')
+export const tryAgain = createAction('TRY_AGAIN')
 
 export const rootReducer = handleActions({
   [setAudioIndex.toString()]: (state, {payload}) => ({
@@ -36,9 +39,9 @@ export const rootReducer = handleActions({
     ...state,
     isAudioPlaying: action.payload
   }),
-  [setBirdsData.toString()]: (state, {payload}) => ({
+  [setBirdsData.toString()]: (state, {payload: birdsData}) => ({
     ...state,
-    birdsData: payload
+    birdsData,
   }),
   [setSelectedBird.toString()]: (state, {payload}) => ({
     ...state,
@@ -53,7 +56,18 @@ export const rootReducer = handleActions({
         state,
         getIsAnswerCorrect(state, payload.audio === state.audioSrc)
     )
-  })
+  }),
+  [goToNextLevel.toString()]: (state) => ({
+    ...state,
+    audioIndex: state.audioIndex + 1,
+    isAudioPlayed: false,
+    isAudioPlaying: false,
+    selectedBird: null,
+    incorrectAnswers: [],
+    isAnswerCorrect: false,
+    levelsCompleted: state.levelsCompleted + 1
+  }),
+  [tryAgain.toString()]: () => defaultState,
 }, defaultState)
 
 function getScore({score, isAnswerCorrect, incorrectAnswers}, isAnswerCorrectComputed) {

@@ -1,13 +1,11 @@
-import React, {PureComponent} from 'react'
+import React, {createRef, PureComponent} from 'react'
 import './birds.css'
-import bird from '../media/bird.jpg'
 import {Player} from "~/audioPlayer/audio";
 import birdsData from "./birdsData";
-import win from '../media/win.mp3';
-import lose from '../media/lose.mp3';
 import perfect from '../media/ultimateWin.mp3'
 import {connect} from "react-redux";
-import {setBirdsData, setSelectedBird} from "~/store";
+import {goToNextLevel, setBirdsData, setSelectedBird} from "~/store";
+import {withRouter} from "react-router";
 
 function getCorrectCircleClassName(
     entry,
@@ -28,18 +26,53 @@ function getCorrectCircleClassName(
 }
 
 class BirdsComponent extends PureComponent {
+  listenNotificationRef = createRef()
+
   componentDidMount() {
-    this.props.setBirdsData(birdsData)
+    const {setBirdsData} = this.props
+    setBirdsData(birdsData)
   }
 
   onBirdOptionClick = (entry) => {
     //1 -> immediately
     return () => {
-      const {isAudioPlayed,setSelectedBird,isAnswerCorrect} = this.props
+      const {isAudioPlayed,setSelectedBird,isAnswerCorrect, isAudioPlaying} = this.props
       //2 -> when this function is called
       if(isAudioPlayed && !isAnswerCorrect) {
         setSelectedBird(entry);
       }
+      if (!isAnswerCorrect) {
+        if (!isAudioPlayed || !isAudioPlaying) {
+          if (this.listenNotificationRef.current.classList.contains("play")) {
+            this.listenNotificationRef.current.classList.remove("play")
+            setTimeout(() => {
+              this.listenNotificationRef.current.classList.add("play")
+            })
+          } else {
+            this.listenNotificationRef.current.classList.add("play")
+          }
+        }
+      }
+    }
+  }
+
+  onListenNotificationAnimationEnd = () => {
+    this.listenNotificationRef.current.classList.remove("play")
+  }
+
+  onNextLevelBtnClick = () => {
+    const {goToNextLevel, birdsData, history, audioIndex} = this.props
+    if (audioIndex === birdsData.length - 1) {
+      history.push('/results')
+    } else {
+      goToNextLevel();
+    }
+  }
+
+  componentDidUpdate({ audioIndex}) {
+    const {audioIndex: newAudioIndex, history} = this.props
+    if (audioIndex !== newAudioIndex) {
+      history.push(`/birds/${newAudioIndex}`);
     }
   }
 
@@ -54,6 +87,7 @@ class BirdsComponent extends PureComponent {
       audioSrc,
       isAnswerCorrect,
     } = this.props
+
     const birdsGroup = birdsData[audioIndex] || []
     // correctAnswer type == object (object containing bird data)
     // should be computed from the store data
@@ -86,7 +120,11 @@ class BirdsComponent extends PureComponent {
       </div>
       <div className='bird-pic-description'>
         <p className={isAudioPlayed ? '' : 'initial'} style={{display: isAudioPlayed ? 'none' : 'flex'}}>
-          <span className={(isAudioPlaying || isAudioPlayed) ? 'listen' : 'listen play'}>Послушайте плеер.</span>
+          <span
+              className="listen"
+              ref={this.listenNotificationRef}
+              onAnimationEnd={this.onListenNotificationAnimationEnd}
+          >Послушайте плеер.</span>
           <span>Выберите птицу из списка</span>
         </p>
         <div style={{display: isAudioPlayed ? 'flex' : 'none'}} className="cards">
@@ -110,24 +148,26 @@ class BirdsComponent extends PureComponent {
         </div>
       </div>
       <div className='btn-next-level'>
-        <button className={isAnswerCorrect ? 'btn next-level btn-next' : 'btn next-level'}>Next level</button>
+        <button
+            onClick={this.onNextLevelBtnClick}
+            className={isAnswerCorrect ? 'btn next-level btn-next' : 'btn next-level'}
+            disabled={!isAnswerCorrect}
+        >
+          Next level
+        </button>
       </div>
     </div>
   }
 }
 export const Birds = connect(state => state,{
   setBirdsData,
-  setSelectedBird
-})(BirdsComponent)
-
-export const getRandomSong = (index = 0) => {
-  return birdsData[index].map((el) => {
-    return el.audio
-  })[getRandomArbitrary(0,6)]
-}
-const getRandomArbitrary = (min, max) =>  {
-  return Math.floor(Math.random() * (max - min) + min);
-}
+  setSelectedBird,
+  goToNextLevel,
+})(
+    withRouter(
+        BirdsComponent
+    )
+)
 
 const finalPage = () => {
   const birdBlock = document.querySelector('.bird-block');

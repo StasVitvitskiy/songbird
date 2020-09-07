@@ -6,6 +6,9 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom"
 import {StartPage} from "~/startPage/startPage";
 import {store} from "~/store";
 import {Provider} from "react-redux";
+import {FinalPage} from "~/finalPage/finalPage";
+import {Birds} from "~/birds/birds";
+import {Main} from "~/main/main";
 
 render(<Router>
     <Provider store={store}>
@@ -14,7 +17,15 @@ render(<Router>
           <StartPage/>
         </Route>
         <Route exact path="/birds/:index">
-          <App />
+          <App>
+            <Main />
+            <Birds />
+          </App>
+        </Route>
+        <Route exact path="/results">
+          <App>
+            <FinalPage />
+          </App>
         </Route>
       </Switch>
     </Provider>
