@@ -1,19 +1,14 @@
-.perfect {
-  display: none;
-}
 .final-page {
-  display: none;
   background-color: #303030;
   color: white;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
 }
-.congrats {
+.perfect, .congrats {
   font-size: 4.5rem;
+  text-align: center;
 }
 h6 {
   font-size: 1.2rem;
+  text-align: center;
 }
 .try-again {
   background-color: #00bc8c;
