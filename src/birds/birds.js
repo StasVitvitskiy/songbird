@@ -6,6 +6,7 @@ import perfect from '../media/ultimateWin.mp3'
 import {connect} from "react-redux";
 import {goToNextLevel, setBirdsData, setSelectedBird} from "~/store";
 import {withRouter} from "react-router";
+import {Trans} from "react-i18next";
 
 function getCorrectCircleClassName(
     entry,
@@ -100,6 +101,7 @@ class BirdsComponent extends PureComponent {
     //find object(el) in birdsGroup array which audio field value === audioSrc
     const correctAnswer = birdsGroup.find(el => el.audio === audioSrc);
     correctAnswer && console.log('Correct Answer: ',correctAnswer);
+    console.log(birdsData.map(row => row.map(col => col.name)).flat())
 
     return <div className='bird-container'>
       <div className='birds rounded'>
@@ -118,7 +120,7 @@ class BirdsComponent extends PureComponent {
                       isAudioPlayed,
                       isAnswerCorrect,
                   )}/>
-                  {entry.name}
+                  <Trans i18nKey={`birds.${entry.name}`}/>
                 </li>)
             )}
           </ul>

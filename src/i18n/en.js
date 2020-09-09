@@ -1,0 +1,51 @@
+export const en = {
+  "translations": {
+    "header": {
+      "warmup": "Warmup",
+      "passerines": "Passerines",
+      "forest_birds": "Forest Birds",
+      'songbirds': 'Songbirds',
+      "predator_birds": "Predator Birds",
+      "seabirds": "Seabirds",
+      "score": "Score"
+    },
+    "birds":{
+      "Ворон": "Crow",
+      "Журавль":"Crane",
+      "Ласточка": "Swallow",
+      "Козодой": "Nightjar",
+      "Кукушка": "Cuckcoo",
+      "Синица":"Tit",
+      "Воробей": "Sparrow",
+      "Грач": "Rook",
+      "Галка": "Jackdaw",
+      "Певчий дрозд": "Songbird",
+      "Сорока": "Magpie",
+      "Сойка": "Jay",
+      "Зяблик": "Finch",
+      "Клёст": "Crossbill",
+      "Горлица": "Turtle Dove",
+      "Дятел": "WoodPecker",
+      "Удод": "Hoopoe",
+      "Стриж": "Swift",
+      "Жаворонок": "Lark",
+      "Соловей": "Nightingale",
+      "Скворец": "Starling",
+      "Иволга": "Oriole",
+      "Свиристель": "WaxWing",
+      "Щегол": "Goldfinch",
+      "Орёл": "Eagle",
+      "Коршун": "Kite",
+      "Лунь": "Harrier",
+      "Сокол": "Falcon",
+      "Ястреб": "Hawk",
+      "Филин": "Owl",
+      "Альбатрос": "Albatross",
+      "Олуша": "Gannets",
+      "Буревестник": "Petrel",
+      "Пеликан": "Pelican",
+      "Пингвин": "Penguin",
+      "Чайка": "Gull"
+    }
+  }
+}

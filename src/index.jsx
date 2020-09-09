@@ -9,6 +9,9 @@ import {Provider} from "react-redux";
 import {FinalPage} from "~/finalPage/finalPage";
 import {Birds} from "~/birds/birds";
 import {Main} from "~/main/main";
+import {initI18n} from "~/i18n";
+
+initI18n()
 
 render(<Router>
     <Provider store={store}>
