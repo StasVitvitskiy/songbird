@@ -70,9 +70,9 @@ export const rootReducer = handleActions({
   [tryAgain.toString()]: () => defaultState,
 }, defaultState)
 
-function getScore({score, isAnswerCorrect, incorrectAnswers}, isAnswerCorrectComputed) {
+function getScore({score, isAnswerCorrect, incorrectAnswers, audioIndex,birdsData}, isAnswerCorrectComputed) {
   if (isAnswerCorrect === false && isAnswerCorrectComputed === true) {
-    return score + Math.max(5 - incorrectAnswers.length, 0);
+    return score + Math.max((birdsData[audioIndex].length - 1) - incorrectAnswers.length, 0);
     /*
     * if 0 incorrect answers -> update score by 5
     * if 1 incorrect answer -> update score by 4

@@ -1,6 +1,6 @@
 import React, {createRef, PureComponent} from 'react'
 import './birds.css'
-import {Player} from "~/audioPlayer/audio";
+import {playAudio, Player} from "~/audioPlayer/audio";
 import birdsData from "./birdsData";
 import perfect from '../media/ultimateWin.mp3'
 import {connect} from "react-redux";
@@ -61,9 +61,16 @@ class BirdsComponent extends PureComponent {
   }
 
   onNextLevelBtnClick = () => {
-    const {goToNextLevel, birdsData, history, audioIndex} = this.props
+    if (this.listenNotificationRef.current.classList.contains("play")) {
+      this.listenNotificationRef.current.classList.remove("play")
+    }
+
+    const {goToNextLevel, birdsData, history, audioIndex,score} = this.props
     if (audioIndex === birdsData.length - 1) {
       history.push('/results')
+      if(score === birdsData.length * (birdsData[audioIndex].length - 1)) {
+        playAudio(perfect);
+      }
     } else {
       goToNextLevel();
     }
@@ -79,7 +86,6 @@ class BirdsComponent extends PureComponent {
   render() {
     const {
       isAudioPlayed,
-      isAudioPlaying,
       birdsData,
       audioIndex,
       selectedBird,
@@ -153,7 +159,7 @@ class BirdsComponent extends PureComponent {
             className={isAnswerCorrect ? 'btn next-level btn-next' : 'btn next-level'}
             disabled={!isAnswerCorrect}
         >
-          Next level
+          {audioIndex === birdsData.length - 1 ? 'Results' : 'Next Level'}
         </button>
       </div>
     </div>
@@ -168,28 +174,3 @@ export const Birds = connect(state => state,{
         BirdsComponent
     )
 )
-
-const finalPage = () => {
-  const birdBlock = document.querySelector('.bird-block');
-  const birdContainer = document.querySelector('.bird-container');
-  birdBlock.style.display = 'none';
-  birdContainer.style.display = 'none';
-  const finalPage = document.querySelector('.final-page');
-  finalPage.style.display = 'flex';
-  const score = document.querySelector('.score');
-  const resultEl = document.querySelector('.score-span');
-  if(resultEl.innerText === '30') {
-    document.querySelector('.congrats').style.display = 'none';
-    document.querySelector('.perfect').style.display = 'block';
-    let audio = new Audio(perfect);
-    audio.play();
-  } else {
-    resultEl.innerText = score.innerText;
-    document.querySelector('.perfect').style.display = 'none';
-    document.querySelector('.congrats').style.display = 'block';
-  }
-  const tryAgainBtn = document.querySelector('.try-again');
-  tryAgainBtn.addEventListener('click', () => {
-    location.reload();
-  })
-}
