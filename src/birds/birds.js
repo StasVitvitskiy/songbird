@@ -101,8 +101,6 @@ class BirdsComponent extends PureComponent {
     //find object(el) in birdsGroup array which audio field value === audioSrc
     const correctAnswer = birdsGroup.find(el => el.audio === audioSrc);
     correctAnswer && console.log('Correct Answer: ',correctAnswer);
-    console.log(birdsData.map(row => row.map(col => col.name)).flat())
-
     return <div className='bird-container'>
       <div className='birds rounded'>
         <div className='birds-group'>
@@ -132,15 +130,21 @@ class BirdsComponent extends PureComponent {
               className="listen"
               ref={this.listenNotificationRef}
               onAnimationEnd={this.onListenNotificationAnimationEnd}
-          >Послушайте плеер.</span>
-          <span>Выберите птицу из списка</span>
+          >
+            <Trans i18nKey="instructions.listen_to_audio" />
+          </span>
+          <span>
+            <Trans i18nKey="instructions.choose_bird" />
+          </span>
         </p>
         <div style={{display: isAudioPlayed ? 'flex' : 'none'}} className="cards">
           {selectedBird && (
               <div className='top-block'>
                 <img className='bird-img' src={selectedBird.image} alt=""/>
                 <ul className="group">
-                  <li className="descr"><h4 className='title'>{selectedBird.name}</h4></li>
+                  <li className="descr"><h4 className='title'>
+                    <Trans i18nKey={`birds.${selectedBird.name}`}/>
+                  </h4></li>
                   <li className="descr"><span className='latin-bird-info'>{selectedBird.species}</span></li>
                   <li className="player">
                     <Player src={selectedBird.audio} />
@@ -150,7 +154,7 @@ class BirdsComponent extends PureComponent {
           )}
           <div className='bird-info-cont'>
             <span className="bird-information">
-              {selectedBird && selectedBird.description}
+              {selectedBird && <Trans i18nKey={`descriptions.${selectedBird.name}`}/>}
               </span>
           </div>
         </div>
@@ -161,7 +165,7 @@ class BirdsComponent extends PureComponent {
             className={isAnswerCorrect ? 'btn next-level btn-next' : 'btn next-level'}
             disabled={!isAnswerCorrect}
         >
-          {audioIndex === birdsData.length - 1 ? 'Results' : 'Next Level'}
+          {audioIndex === birdsData.length - 1 ? <Trans i18nKey="buttons.results"/> : <Trans i18nKey="buttons.next_level"/>}
         </button>
       </div>
     </div>
