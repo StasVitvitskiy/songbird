@@ -7,7 +7,6 @@
     "start": "webpack-dev-server",
     "build": "webpack"
   },
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
